@@ -1,7 +1,18 @@
 // ==================data table
     $(document).ready( function () {
         $('#dashboard-table').DataTable({
-            scrollX: true
+            scrollX: true,
+            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>t<'row'<'col-sm-6'i><'col-sm-6'p>><'row'<'col-sm-12'B>>",
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: 'Excel Export',
+                    init: function (api, node, config) {
+                        // Hide the button if isAdminTable is false
+                        $(node).css('display', showExcel ? 'block' : 'none');
+                    }
+                }
+            ]
         });
     } );    
 //    Charrts 1

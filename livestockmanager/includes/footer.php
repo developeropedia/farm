@@ -2,9 +2,8 @@
 </div>
 </div>
 
-
 <script>
-        const showExcel = true;
+        const showExcel = true
 </script>
 
 <script src="../assets/js/bootstrap.min.js"></script>

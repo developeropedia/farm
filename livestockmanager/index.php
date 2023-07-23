@@ -6,7 +6,13 @@ if(isset($_GET['id'])) {
     delete("cattle", "id", $_GET['id']);
 }
 
-$cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
+$countryStations = countryStations();
+
+$cattle = null;
+
+if(!empty($countryStations)) {
+    $cattle = findAllByQuery("SELECT *, s.id AS sId, s.name AS sName FROM cattle INNER JOIN stations s ON s.id = station_id WHERE station_id IN (" . implode(',', $countryStations) . ") ORDER BY created_at DESC");
+}
 
 ?>
 
@@ -35,6 +41,7 @@ $cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
                                 <thead>
                                 <tr>
                                     <th class="products-table-head">S.No</th>
+                                    <th class="products-table-head">Station</th>
                                     <th class="products-table-head">Tag No.</th>
                                     <th class="products-table-head">Type</th>
                                     <th class="products-table-head">Breed</th>
@@ -43,7 +50,6 @@ $cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
                                     <th class="products-table-head">Remarks</th>
                                     <th class="products-table-head">Created at</th>
                                     <th class="products-table-head">Updated at</th>
-                                    <th class="products-table-head">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -51,6 +57,7 @@ $cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
                                     <?php $count = 1; foreach ($cattle as $c): ?>
                                         <tr>
                                             <td class="product-table-text"><?php echo $count++ ?></td>
+                                            <td class="product-table-text"><?php echo $c->sName ?></td>
                                             <td class="product-table-text"><?php echo $c->tag_num ?></td>
                                             <td class="product-table-text"><?php echo findById("cattle_types", $c->cattle_type_id)->type ?></td>
                                             <td class="product-table-text"><?php echo $c->breed ?></td>
@@ -59,14 +66,6 @@ $cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
                                             <td class="product-table-text"><?php echo $c->remarks ?></td>
                                             <td class="product-table-text"><?php echo date("d M, Y", strtotime($c->created_at)) ?></td>
                                             <td class="product-table-text"><?php echo date("d M, Y", strtotime($c->updated_at)) ?></td>
-                                            <td class="icons">
-                                                <div class="d-flex">
-                                                    <a href="edit-cattle.php?id=<?php echo $c->id ?>"> <i
-                                                                class="bi bi-pencil-square"></i></a>
-                                                    <a href="?id=<?php echo $c->id ?>"> <i
-                                                                class="bi bi-trash"></i></a>
-                                                </div>
-                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endif; ?>

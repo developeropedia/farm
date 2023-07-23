@@ -6,7 +6,7 @@ if(isset($_SESSION['user'])) {
     redirect("index.php");
 }
 
-$msg = login(1);
+$msg = login(2);
 
 ?>
 

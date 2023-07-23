@@ -19,7 +19,7 @@ function redirect($location)
     echo "<script>window.location.href='" . $location . "'</script>";
 }
 
-function login()
+function login($user_level)
 {
     global $conn;
 
@@ -35,9 +35,10 @@ function login()
         //Check if username is correct
         if ($user) {
             // Check if password is correct
-            if (password_verify($password, $user->password)) {
+            if (password_verify($password, $user->password) && $user_level == $user->level) {
                 //Storing user in session
                 $_SESSION['user'] = $user->id;
+                $_SESSION['level'] = $user->level;
                 redirect('index.php');
             } else {
                 return "<p class='text-danger fw-bold m-0 p-0'>Username or password is wrong!</p>";
@@ -151,6 +152,24 @@ function findUserByEmail($email)
 function findAllUsers()
 {
     return findAllByQuery("SELECT * FROM users");
+}
+
+function getUserStation() {
+    return findByQuery("SELECT * FROM user_station WHERE user_id = " . $_SESSION['user']);
+}
+
+function getUserCountry() {
+    return findByQuery("SELECT * FROM user_country WHERE user_id = " . $_SESSION['user']);
+}
+
+function countryStations() {
+    $country = getUserCountry();
+    $stations = findAllByQuery("SELECT * FROM stations WHERE country_id = " . $country->country_id);
+    if(empty($stations) || empty($country)) {
+        return null;
+    }else {
+        return array_column($stations, "id");
+    }
 }
 
 function timeAgo($datetime, $full = false)

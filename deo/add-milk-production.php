@@ -2,6 +2,12 @@
 
 include_once "includes/header.php";
 
+$userStation = getUserStation();
+if (empty($userStation)) {
+    echo "<script>alert('You are not assigned a station!')</script>";
+    redirect("index.php");
+}
+
 if(isset($_POST['submit'])) {
     unset($_POST['submit']);
     $_POST['total_production'] = $_POST['morning_production'] + $_POST['evening_production'];

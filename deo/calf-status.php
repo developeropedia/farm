@@ -3,10 +3,14 @@
 include_once "includes/header.php";
 
 if(isset($_GET['id'])) {
-    delete("cattle", "id", $_GET['id']);
+    delete("calf_status_record", "id", $_GET['id']);
 }
 
-$cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
+$userStation = getUserStation();
+
+$query = "SELECT * FROM calf_status_record br";
+$query .= " WHERE br.station_id = " . $userStation->station_id;
+$calf_status_records = findAllByQuery($query);
 
 ?>
 
@@ -16,7 +20,7 @@ $cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
         <div class="p-20">
             <div class="d-flex justify-content-end align-items-center flex-wrap">
                 <div class="d-flex align-items-center btns-row">
-                    <a href="add-cattle.php"><button class="panel-button">+&nbsp;&nbsp;Add Cattle</button></a>
+                    <a href="add-calf-status.php"><button class="panel-button">+&nbsp;&nbsp;Add Record</button></a>
                 </div>
             </div>
 
@@ -27,7 +31,7 @@ $cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
                 <div class="col-lg-12">
                     <div class="panel-card">
                         <div class="">
-                            <p class="f-20 w-400 my-3">Cattle</p>
+                            <p class="f-20 w-400 my-3">Calf Status Record</p>
                             <div class="seprator"></div>
                         </div>
                         <div class="products-table-wrapper">
@@ -35,35 +39,31 @@ $cattle = findAllByQuery("SELECT * FROM cattle ORDER BY created_at DESC");
                                 <thead>
                                 <tr>
                                     <th class="products-table-head">S.No</th>
-                                    <th class="products-table-head">Tag No.</th>
-                                    <th class="products-table-head">Type</th>
-                                    <th class="products-table-head">Breed</th>
-                                    <th class="products-table-head">DOB</th>
-                                    <th class="products-table-head">Date of entry</th>
+                                    <th class="products-table-head">Calf Name</th>
+                                    <th class="products-table-head">Birth Date</th>
+                                    <th class="products-table-head">Gender</th>
+                                    <th class="products-table-head">Weight</th>
+                                    <th class="products-table-head">Health Condition</th>
                                     <th class="products-table-head">Remarks</th>
-                                    <th class="products-table-head">Created at</th>
-                                    <th class="products-table-head">Updated at</th>
                                     <th class="products-table-head">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php if(!empty($cattle)): ?>
-                                    <?php $count = 1; foreach ($cattle as $c): ?>
+                                <?php if(!empty($calf_status_records)): ?>
+                                    <?php $count = 1; foreach ($calf_status_records as $br): ?>
                                         <tr>
                                             <td class="product-table-text"><?php echo $count++ ?></td>
-                                            <td class="product-table-text"><?php echo $c->tag_num ?></td>
-                                            <td class="product-table-text"><?php echo findById("cattle_types", $c->cattle_type_id)->type ?></td>
-                                            <td class="product-table-text"><?php echo $c->breed ?></td>
-                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($c->date_of_birth)) ?></td>
-                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($c->date_of_entry)) ?></td>
-                                            <td class="product-table-text"><?php echo $c->remarks ?></td>
-                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($c->created_at)) ?></td>
-                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($c->updated_at)) ?></td>
+                                            <td class="product-table-text"><?php echo $br->calf_name ?></td>
+                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($br->birth_date)) ?></td>
+                                            <td class="product-table-text"><?php echo $br->gender ?></td>
+                                            <td class="product-table-text"><?php echo $br->weight ?> KG</td>
+                                            <td class="product-table-text"><?php echo $br->health_condition ?></td>
+                                            <td class="product-table-text"><?php echo $br->remarks ?></td>
                                             <td class="icons">
                                                 <div class="d-flex">
-                                                    <a href="edit-cattle.php?id=<?php echo $c->id ?>"> <i
+                                                    <a href="edit-calf-status.php?id=<?php echo $br->id ?>"> <i
                                                                 class="bi bi-pencil-square"></i></a>
-                                                    <a href="?id=<?php echo $c->id ?>"> <i
+                                                    <a href="?id=<?php echo $br->id ?>"> <i
                                                                 class="bi bi-trash"></i></a>
                                                 </div>
                                             </td>

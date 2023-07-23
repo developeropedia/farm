@@ -2,28 +2,18 @@
 
 include_once "includes/header.php";
 
+if(!isset($_GET['id'])) {
+    redirect("index.php");
+}
+
 if(isset($_POST['submit'])) {
     unset($_POST['submit']);
-    insert("cattle", $_POST);
+    update("cattle", $_POST, "id", $_GET['id']);
 
-    $msg = "<p class='text-success'>Cattle created successfully!</p>";
+    $msg = "<p class='text-success'>Cattle updated successfully!</p>";
 }
 
-function generateTagNumber() {
-    $length = 8; // length of tag number
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $tagNumber = '';
-    for ($i = 0; $i < $length; $i++) {
-        $tagNumber .= $characters[rand(0, strlen($characters) - 1)];
-    }
-    return $tagNumber;
-}
-
-do {
-    $tagExists = "";
-    $tagNumber = generateTagNumber();
-    $tagExists = findByQuery("SELECT * FROM cattle WHERE tag_num = '{$tagNumber}'");
-} while (!empty($tagExists));
+$cattle = findById("cattle", $_GET['id']);
 
 $types = findAll("cattle_types");
 ?>
@@ -45,31 +35,25 @@ $types = findAll("cattle_types");
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="breed" class="form-label f-14 w-500">Breed</label>
-                                    <input type="text" name="breed" class="form-control" id="breed">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="tag_num" class="form-label f-14 w-500">Tag No.</label>
-                                    <input readonly type="text" value="<?php echo $tagNumber ?>" name="tag_num" class="form-control" id="tag_num">
+                                    <input type="text" value="<?php echo $cattle->breed ?>" name="breed" class="form-control" id="breed">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="dob" class="form-label f-14 w-500">Date of birth</label>
-                                    <input type="date" name="date_of_birth" class="form-control" id="dob">
+                                    <input type="date" value="<?php echo $cattle->date_of_birth ?>" name="date_of_birth" class="form-control" id="dob">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="doe" class="form-label f-14 w-500">Date of entry</label>
-                                    <input type="date" name="date_of_entry" class="form-control" id="doe">
+                                    <input type="date" value="<?php echo $cattle->date_of_entry ?>" name="date_of_entry" class="form-control" id="doe">
                                 </div>
                             </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="remarks" class="form-label f-14 w-500">Remarks</label>
-                                    <textarea name="remarks" class="form-control" id="remarks"></textarea>
+                                    <input type="text" name="remarks" value="<?php echo $cattle->remarks ?>" class="form-control" id="remarks">
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -77,7 +61,7 @@ $types = findAll("cattle_types");
                                 <select name="cattle_type_id" class="form-select mb-3" id="level">
                                     <?php if(!empty($types)): ?>
                                     <?php foreach ($types as $type): ?>
-                                        <option value="<?php echo $type->id ?>"><?php echo $type->type ?></option>
+                                        <option <?php echo $cattle->cattle_type_id == $type->id ? 'selected' : '' ?> value="<?php echo $type->id ?>"><?php echo $type->type ?></option>
                                     <?php endforeach; ?>
                                     <?php endif; ?>
                                 </select>

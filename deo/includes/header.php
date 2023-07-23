@@ -22,11 +22,8 @@ $current_user = findById("users", $_SESSION['user']);
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <!-- data table -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.dataTables.min.css">
 
     <link rel="stylesheet" href="../assets/css/typography.css">
     <link rel="stylesheet" href="../assets/css/layout.css">
@@ -66,64 +63,6 @@ $current_user = findById("users", $_SESSION['user']);
                         </ul>
                         <div class="menu-item py-3">
                             <span class="ps-4 f-14 w-500 text-light-white ls-3 menu-heading ">DATA</span>
-                        </div>
-                        <ul>
-                            <li class="menu-item">
-                                <a href="users.php">
-                                    <span class="menu-icon">
-                                        <i class="bi bi-people"></i>
-                                    </span>
-                                    <span class="menu-title">Users</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="countries.php">
-                                    <span class="menu-icon">
-                                        <i class="bi bi-globe-asia-australia"></i>
-                                    </span>
-                                    <span class="menu-title">Countries</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="stations.php">
-                                    <span class="menu-icon">
-                                        <i class="bi bi-pin-map"></i>
-                                    </span>
-                                    <span class="menu-title">Stations</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="levels.php">
-                                    <span class="menu-icon">
-                                        <i class="bi bi-person-badge"></i>
-                                    </span>
-                                    <span class="menu-title">Levels</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="menu-item py-3">
-                            <span class="ps-4 f-14 w-500 text-light-white ls-3 menu-heading ">ASSIGNMENTS</span>
-                        </div>
-                        <ul>
-                            <li class="menu-item">
-                                <a href="country-assignments.php">
-                                    <span class="menu-icon">
-                                        <i class="bi bi-globe-americas"></i>
-                                    </span>
-                                    <span class="menu-title">Country Level</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="station-assignments.php">
-                                    <span class="menu-icon">
-                                        <i class="bi bi-geo"></i>
-                                    </span>
-                                    <span class="menu-title">Station Level</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="menu-item py-3">
-                            <span class="ps-4 f-14 w-500 text-light-white ls-3 menu-heading ">REPORTS</span>
                         </div>
                         <ul>
                             <li class="menu-item">

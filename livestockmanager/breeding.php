@@ -3,10 +3,20 @@
 include_once "includes/header.php";
 
 if(isset($_GET['id'])) {
-    delete("milk_production", "id", $_GET['id']);
+    delete("breeding_records", "id", $_GET['id']);
 }
 
-$milk_production = findAllByQuery("SELECT *, mp.id AS mpId FROM milk_production mp INNER JOIN cattle c on mp.cattle_id = c.id ORDER BY mp.created_at DESC");
+$countryStations = countryStations();
+
+$breedings = null;
+
+if(!empty($countryStations)) {
+    $query = "SELECT *, br.id AS brId, s.id AS sId, s.name AS sName FROM breeding_records br";
+    $query .= " INNER JOIN cattle c ON c.id = br.animal_id";
+    $query .= " INNER JOIN stations s ON s.id = br.station_id";
+    $query .= " WHERE br.station_id IN (" . implode(',', $countryStations) . ")";
+    $breedings = findAllByQuery($query);
+}
 
 ?>
 
@@ -16,7 +26,7 @@ $milk_production = findAllByQuery("SELECT *, mp.id AS mpId FROM milk_production 
         <div class="p-20">
             <div class="d-flex justify-content-end align-items-center flex-wrap">
                 <div class="d-flex align-items-center btns-row">
-                    <a href="add-milk-production.php"><button class="panel-button">+&nbsp;&nbsp;Add Milk Production</button></a>
+                    <a href="add-breeding.php"><button class="panel-button">+&nbsp;&nbsp;Add Record</button></a>
                 </div>
             </div>
 
@@ -27,7 +37,7 @@ $milk_production = findAllByQuery("SELECT *, mp.id AS mpId FROM milk_production 
                 <div class="col-lg-12">
                     <div class="panel-card">
                         <div class="">
-                            <p class="f-20 w-400 my-3">Milk Production</p>
+                            <p class="f-20 w-400 my-3">Breeding Record</p>
                             <div class="seprator"></div>
                         </div>
                         <div class="products-table-wrapper">
@@ -35,33 +45,33 @@ $milk_production = findAllByQuery("SELECT *, mp.id AS mpId FROM milk_production 
                                 <thead>
                                 <tr>
                                     <th class="products-table-head">S.No</th>
+                                    <th class="products-table-head">Station</th>
                                     <th class="products-table-head">Tag No.</th>
-                                    <th class="products-table-head">Production Date</th>
-                                    <th class="products-table-head">Morning Production</th>
-                                    <th class="products-table-head">Evening Production</th>
-                                    <th class="products-table-head">Total Production</th>
+                                    <th class="products-table-head">Breeding Date</th>
+                                    <th class="products-table-head">Litter Size</th>
+                                    <th class="products-table-head">Comment</th>
                                     <th class="products-table-head">Created at</th>
                                     <th class="products-table-head">Updated at</th>
                                     <th class="products-table-head">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php if(!empty($milk_production)): ?>
-                                    <?php $count = 1; foreach ($milk_production as $mp): ?>
+                                <?php if(!empty($breedings)): ?>
+                                    <?php $count = 1; foreach ($breedings as $breeding): ?>
                                         <tr>
                                             <td class="product-table-text"><?php echo $count++ ?></td>
-                                            <td class="product-table-text"><?php echo $mp->tag_num ?></td>
-                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($mp->production_date)) ?></td>
-                                            <td class="product-table-text"><?php echo $mp->morning_production ?> Liters</td>
-                                            <td class="product-table-text"><?php echo $mp->evening_production ?> Liters</td>
-                                            <td class="product-table-text"><?php echo $mp->total_production ?> Liters</td>
-                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($mp->created_at)) ?></td>
-                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($mp->updated_at)) ?></td>
+                                            <td class="product-table-text"><?php echo $breeding->sName ?></td>
+                                            <td class="product-table-text"><?php echo $breeding->tag_num ?></td>
+                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($breeding->breeding_date)) ?></td>
+                                            <td class="product-table-text"><?php echo $breeding->litter_size ?></td>
+                                            <td class="product-table-text"><?php echo $breeding->comments ?></td>
+                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($breeding->created_at)) ?></td>
+                                            <td class="product-table-text"><?php echo date("d M, Y", strtotime($breeding->updated_at)) ?></td>
                                             <td class="icons">
                                                 <div class="d-flex">
-                                                    <a href="edit-milk-production.php?id=<?php echo $mp->mpId ?>"> <i
+                                                    <a href="edit-breeding.php?id=<?php echo $breeding->brId ?>"> <i
                                                                 class="bi bi-pencil-square"></i></a>
-                                                    <a href="?id=<?php echo $mp->mpId ?>"> <i
+                                                    <a href="?id=<?php echo $breeding->brId ?>"> <i
                                                                 class="bi bi-trash"></i></a>
                                                 </div>
                                             </td>
